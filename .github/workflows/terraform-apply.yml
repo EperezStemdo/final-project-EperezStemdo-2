@@ -1,4 +1,4 @@
-name: 'Terraform apply on closed PR'
+name: 'Terraform apply on closed PRs'
 
 on:
   push:
