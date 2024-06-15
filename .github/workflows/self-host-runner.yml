@@ -11,15 +11,9 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: ssh
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa    
+      uses: actions/checkout@v2 
 
     - name: Conect to MV
       run: |
-        ssh -o StrictHostKeyChecking=no eperez@40.68.215.165
+        ssh eperez@40.68.215.165
         
