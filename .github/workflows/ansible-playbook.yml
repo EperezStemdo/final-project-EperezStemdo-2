@@ -1,4 +1,4 @@
-name: Ansible playbook mysql
+name: Ansible playbook mysqql
 
 on:
   #workflow_dispatch:
