@@ -13,9 +13,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install sshpass
+    - name: ssh
       run: |
-        sudo apt-get install sshpass
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa    
 
     - name: Conect to MV
       run: |
