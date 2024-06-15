@@ -2,9 +2,8 @@ name: 'Terraform apply on closed PR'
 
 on:
   push:
-    #branches: [main]
-     branches:
-       '*'
+     branches: [main]
+   
 
 permissions:
   id-token: write
