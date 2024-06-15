@@ -1,1 +1,22 @@
+name: Ansible - Deploy PostgreSQL
 
+on:
+  #workflow_dispatch:
+  push:
+    branches:
+      - '*'
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Ansible
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ansible
+
+    - name: Run Ansible Playbook
+      run:  ansible-playbook -i ansible/inventory.ini ansible/install-mysql.yaml
