@@ -17,14 +17,12 @@ jobs:
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
         chmod 600 ~/.ssh/id_rsa  
 
     - name: Conect to MV
       run: |
-        ssh-keyscan -H 13.95.171.10 >> ~/.ssh/known_hosts
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no eperez@13.95.171.10
+        
 
-#        ssh eperez@13.95.171.1
+        ssh eperez@13.95.171.1
 
         
