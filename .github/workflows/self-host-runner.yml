@@ -22,6 +22,10 @@ jobs:
 
     - name: Conect to MV
       run: |
-        ssh eperez@13.95.171.1
+        ssh-keyscan -H 13.95.171.10 >> ~/.ssh/known_hosts
+        ssh-keygen -R 13.95.171.10
+        ssh -o StrictHostKeyChecking=no eperez@13.95.171.10
+
+#        ssh eperez@13.95.171.1
 
         
