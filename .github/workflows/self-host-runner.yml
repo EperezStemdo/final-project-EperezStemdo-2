@@ -1,0 +1,23 @@
+name: self host runner
+
+on:
+  #workflow_dispatch:
+  push:
+    branches:
+      - '*'
+jobs:
+  ansible:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install sshpass
+      run: |
+        sudo apt-get install sshpass
+
+    - name: Conect to MV
+      run: |
+        sshpass -p 'Eperez1234!' ssh eperez@40.68.215.165
+        
