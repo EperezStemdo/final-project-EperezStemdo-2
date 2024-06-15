@@ -1,4 +1,4 @@
-name: Ansible - Deploy PostgreSQL
+name: Ansible playbook mysql
 
 on:
   #workflow_dispatch:
