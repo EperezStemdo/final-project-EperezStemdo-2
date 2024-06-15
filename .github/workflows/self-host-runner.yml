@@ -22,5 +22,6 @@ jobs:
 
     - name: Conect to MV
       run: |
-        ssh eperez@40.68.215.165
+        ssh eperez@13.95.171.1
+
         
