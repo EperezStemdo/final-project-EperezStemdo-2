@@ -19,5 +19,5 @@ jobs:
 
     - name: Conect to MV
       run: |
-        sshpass -p 'Eperez1234!' ssh eperez@40.68.215.165
+        ssh eperez@40.68.215.165
         
