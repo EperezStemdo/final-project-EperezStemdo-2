@@ -1,4 +1,4 @@
-name: 'Terraform plan on PRs'
+name: 'Terraform plan on PR'
 
 on:
   #pull_request:
