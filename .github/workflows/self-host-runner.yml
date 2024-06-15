@@ -21,5 +21,5 @@ jobs:
 
     - name: Conect to MV
       run: |
-        ssh eperez@40.68.215.165
+        ssh -o StrictHostKeyChecking=no eperez@40.68.215.165
         
