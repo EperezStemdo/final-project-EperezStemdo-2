@@ -1,0 +1,7 @@
+# Ansible
+
+Comando para ejecutar el playbook:
+
+```
+ ansible-playbook -i inventory.ini install-mysql.yaml
+```

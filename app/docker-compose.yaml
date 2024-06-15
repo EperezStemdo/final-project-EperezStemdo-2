@@ -1,0 +1,40 @@
+version: '3.1'
+ 
+services:
+  db:
+    image: mysql:8
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: concierto
+    ports:
+      - "3307:3306"  # Exposing MySQL on port 3307 to avoid conflicts
+    volumes:
+      - db_data:/var/lib/mysql
+ 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    ports:
+      - 8081:80
+    restart: always
+ 
+  web:
+    build: .
+    container_name: web
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+ 
+volumes:
+  db_data:

@@ -1,0 +1,48 @@
+- name: mysql installai
+  hosts: vmdb
+  become: yes
+  tasks:
+    - name: installation
+      apt:
+        name:
+          - mysql-server
+          - python3-pip
+        state: present
+
+    - name: Install PyMySQL and qioerp
+      pip:
+        name:
+          - pymysql
+        state: present
+
+    - name: Start MySQL service
+      service:
+        name: mysql
+        state: started
+
+    - name: Ensure MySQL is running
+      wait_for:
+        port: 3306
+        timeout: 60
+
+    - name: Create database
+      mysql_db:
+        name: concierto
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Create MySQL user
+      mysql_user:
+        name: eperez
+        password: 1234
+        priv: '*.*:ALL'
+        host: 192.168.1.201
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        state: present
+     
+
+    - name: Check if database was created
+      command: "sudo mysql -u root -p1234 -e 'show databases;'"
+      register: result
+    - debug:
+        var: result

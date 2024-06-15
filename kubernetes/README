@@ -1,0 +1,21 @@
+# Kubernetes
+
+Para poder hacer pull de la imagen desde un repositorio privado, en primer lugar hay que crear un secreto utilizando el comando:
+
+```
+kubectl create secret docker-registry secret-acr --docker-server=eperezacr.azurecr.io --docker-username=eperezacr --docker-password=*** -n php-app
+```
+
+Los credenciales se obtienen en el portal de Azure, dentro del ACR creado, en el apartado ``claves de acceso``. Es necesario marcar la casilla ``Usuario administrador``.
+
+El siguiente paso es indicarle al deployment que necesita el secreto para poder acceder al repositorio. Para ello, se añade en el deployment dentro del contenedor: 
+
+```yaml
+imagePullSecrets:
+  - name: secret-acr
+```
+Se puede comprobar que los pods están en estado running:
+
+![](./imgs/pods-running.png)
+
+
