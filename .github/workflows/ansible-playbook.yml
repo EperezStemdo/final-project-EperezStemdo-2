@@ -1,4 +1,4 @@
-name: Ansible playbook mysqql
+name: Ansible playbook mysql
 
 on:
   #workflow_dispatch:
@@ -16,6 +16,7 @@ jobs:
     - name: Install Ansible
       run: |
         sudo apt-get update
+        sudo apt-get install sshpass
         sudo apt-get install -y ansible
 
     - name: Playbook
