@@ -21,7 +21,7 @@ jobs:
         uses: azure/docker-login@v1
         with:
           server: eperezacr.azurecr.io
-          user: eperezacr
+          username: eperezacr
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Docker image build, tag & push
