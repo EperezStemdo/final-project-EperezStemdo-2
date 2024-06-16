@@ -3,8 +3,8 @@ name: self host runner
 on:
   #workflow_dispatch:
   push:
-    branches:
-      - '*'
+    branches: [main]
+      #- '*'
 jobs:
   ansible:
     runs-on: ubuntu-latest
