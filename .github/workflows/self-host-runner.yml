@@ -1,4 +1,4 @@
-name: self host runner
+name: self host runnerr
 
 on:
   #workflow_dispatch:
