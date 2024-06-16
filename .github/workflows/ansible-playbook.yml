@@ -18,6 +18,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install sshpass
         sudo apt-get install -y ansible
-
+    - name: SSH key & host
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa 
+        ssh-keyscan -H 52.166.114.32 >> ~/.ssh/known_hosts
     - name: Playbook
       run:  ansible-playbook -i ansible/inventory.ini ansible/install-mysql.yaml
