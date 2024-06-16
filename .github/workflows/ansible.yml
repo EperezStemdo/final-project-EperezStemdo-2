@@ -6,7 +6,7 @@ on:
     branches: #[main]
       - '*'
 jobs:
-  self-host:
+  ansible:
     runs-on: ubuntu-latest
 
     steps:
