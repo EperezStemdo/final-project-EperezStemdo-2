@@ -1,0 +1,33 @@
+name: self host runnerr
+
+on:
+  #workflow_dispatch:
+  push:
+    branches: #[main]
+      - '*'
+jobs:
+  self-host:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: SSH key & host
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa 
+        ssh-keyscan -H 4.180.190.192 >> ~/.ssh/known_hosts
+        
+    - name: Conect to MV
+      run: |
+        ssh eperez@4.180.190.192 
+        
+    - name: Install Ansible
+      run: |
+        sudo apt-get update
+        sudo apt-get install sshpass
+        sudo apt-get install -y ansible
+    - name: Playbook
+      run:  ansible-playbook -i ansible/inventory.ini ansible/install-mysql.yaml    
