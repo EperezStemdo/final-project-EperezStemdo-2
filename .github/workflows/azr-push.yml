@@ -35,3 +35,26 @@ jobs:
           docker build -t my-php-app ./app
           docker tag my-php-app eperezacr.azurecr.io/eperez:1
           docker push eperezacr.azurecr.io/eperez:1
+          
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZ_CREDENTIALS }}
+
+      - name: AKS get credentials
+        run: az aks get-credentials --resource-group rg-eperez-dvfinlab --name eperezAKS
+        
+      - name: Deploy and check pods
+        run: |
+          kubectl create secret docker-registry secret-acr --docker-server=eperezacr.azurecr.io --docker-username=eperezacr --docker-password=${{ secrets.ACR_PASSWORD }} -n php-app
+          kubectl apply -f kubernetes/namespace.yaml
+          kubectl apply -f kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl get pods -n php-app
+        
