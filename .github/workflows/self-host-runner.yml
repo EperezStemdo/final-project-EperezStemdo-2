@@ -3,10 +3,10 @@ name: self host runner
 on:
   #workflow_dispatch:
   push:
-    branches: [main]
-      #- '*'
+    branches: #[main]
+      - '*'
 jobs:
-  ansible:
+  self-host:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,23 +18,20 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa 
-        ssh-keyscan -H 13.95.171.1 >> ~/.ssh/known_hosts
+        ssh-keyscan -H 52.166.114.32 >> ~/.ssh/known_hosts
          
 
     - name: Conect to MV
       run: |
-        ssh eperez@13.95.171.1 '
+        ssh eperez@52.166.114.32 '
         # Create a folder
         mkdir -p actions-runner && cd actions-runner
         # Download the latest runner package
-        curl -o actions-runner-linux-x64-2.317.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz
-        # Optional: Validate the hash
-        echo "9e883d210df8c6028aff475475a457d380353f9d01877d51cc01a17b2a91161d  actions-runner-linux-x64-2.317.0.tar.gz" | shasum -a 256 -c
-        # Extract the installer
+        curl -o actions-runner-linux-x64-2.317.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz        # Optional: Validate the hash
+        echo "9e883d210df8c6028aff475475a457d380353f9d01877d51cc01a17b2a91161d  actions-runner-linux-x64-2.317.0.tar.gz" | shasum -a 256 -c        # Extract the installer
         tar xzf ./actions-runner-linux-x64-2.317.0.tar.gz
         # Create the runner
-        ./config.sh --url https://github.com/stemdo-labs/final-project-EperezStemdo-2 --token BHVSGAN7EOYGHBX5LYL3VB3GNXUW2
-        ./config.sh
+        ./config.sh --url https://github.com/stemdo-labs/final-project-EperezStemdo-2 --token BHVSGAJBRRHVUFHP2QWDGZ3GN24BY        ./config.sh
         # Last step, run it!
         ./run.sh'
 
