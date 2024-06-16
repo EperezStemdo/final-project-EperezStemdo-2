@@ -1,0 +1,37 @@
+name: Push image to Azure Container Registry
+
+on:
+  push:
+    branches:
+      - '*'
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
+
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          server: eperezacr.azurecr.io
+          user: eperezacr
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Docker image build, tag & push
+        run: |
+          docker build -t my-php-app ./app
+          docker tag my-php-app eperezacr.azurecr.io/eperez:1
+          docker push eperezacr.azurecr.io/eperez:1
