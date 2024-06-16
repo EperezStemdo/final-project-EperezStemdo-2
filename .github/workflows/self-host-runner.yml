@@ -18,12 +18,12 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa 
-        ssh-keyscan -H 52.166.114.32 >> ~/.ssh/known_hosts
+        ssh-keyscan -H 20.16.225.119 >> ~/.ssh/known_hosts
          
 
     - name: Conect to MV
       run: |
-        ssh eperez@52.166.114.32 '
+        ssh eperez@20.16.225.119 '
         # Create a folder
         mkdir -p actions-runner && cd actions-runner
         # Download the latest runner package
