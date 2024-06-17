@@ -38,10 +38,13 @@
 
     - name: Create MySQL user
       mysql_user:
-        name: eperez
+        name: root
         password: 1234
         priv: '*.*:ALL'
-        host: 192.168.1.201
+        host: localhost
+        login_user: root
+        login_password: '1234'
+        state: present
         login_unix_socket: /var/run/mysqld/mysqld.sock
         state: present
      
@@ -51,6 +54,7 @@
       register: result
     - debug:
         var: result
+  
         
     - name: Copy SQL file to remote host
       copy:
