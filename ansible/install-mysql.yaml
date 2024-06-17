@@ -47,8 +47,7 @@
         login_user: root
         login_password: '1234'
         state: present
-        login_unix_socket: /var/run/mysqld/mysqld.sock
-        state: present
+        
     
     - name: Enable remote login to mysql
       lineinfile:
