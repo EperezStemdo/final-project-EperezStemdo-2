@@ -54,7 +54,7 @@
       register: result
     - debug:
         var: result
-  
+    
         
     - name: Ejecutar comandos SQL
       hosts: localhost
