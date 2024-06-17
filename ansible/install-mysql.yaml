@@ -47,8 +47,7 @@
         regex: '^bind-address\s*=\s*127.0.0.1'
         line: 'bind-address = 0.0.0.0'
         backup: yes
-      notify:
-        - Restart mysql  
+      
     
     - name: Check if database was created
       command: "sudo mysql -u root -p1234 -e 'show databases;'"
