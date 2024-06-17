@@ -2,6 +2,11 @@
   hosts: vmdb
   become: yes
   tasks:
+  
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+        
     - name: installation
       apt:
         name:
