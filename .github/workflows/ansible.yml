@@ -24,7 +24,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt-get install sshpass
-        sudo apt install -y python3-pip
+        sudo apt-get install -y python3-pip
         sudo apt-get install -y ansible
     - name: Playbook
       run:  ansible-playbook -i ansible/inventory.ini ansible/install-mysql.yaml    
