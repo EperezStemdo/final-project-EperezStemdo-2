@@ -58,7 +58,7 @@
         dest: /tmp/database.sql                # Ruta remota del archivo SQL
         mode: '0644'                           # Permisos del archivo
 
-    - name: Import SQL file
+    - name: Import SQL fil
       mysql_db:
         name: concierto
         state: import
