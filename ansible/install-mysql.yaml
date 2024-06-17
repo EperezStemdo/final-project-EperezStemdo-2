@@ -46,3 +46,83 @@
       register: result
     - debug:
         var: result
+
+    - name: Create tipo_entradas table
+      mysql_query:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: eperez
+        login_password: 1234
+        db: concierto
+        query: |
+          CREATE TABLE IF NOT EXISTS tipo_entradas (
+              id VARCHAR(36) NOT NULL,
+              tipo VARCHAR(30),
+              precio DECIMAL(10, 2),
+              PRIMARY KEY (id)
+          );
+
+    - name: Check if tipo_entradas table was created
+      mysql_db:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: eperez
+        login_password: 1234
+        name: concierto
+      register: tipo_entradas_db
+
+    - debug:
+        var: tipo_entradas_db
+
+    - name: Create entradas table
+      mysql_query:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: eperez
+        login_password: 1234
+        db: concierto
+        query: |
+          CREATE TABLE IF NOT EXISTS entradas (
+              id VARCHAR(36) NOT NULL,
+              fecha DATE,
+              nombre VARCHAR(15),
+              apellidos VARCHAR(30),
+              telefono VARCHAR(9),
+              tipo_entrada VARCHAR(36),
+              cantidad INT,
+              precio DECIMAL(10, 2),
+              PRIMARY KEY (id),
+              FOREIGN KEY (tipo_entrada) REFERENCES tipo_entradas(id)
+          );
+
+    - name: Check if entradas table was created
+      mysql_db:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: eperez
+        login_password: 1234
+        name: concierto
+      register: entradas_db
+
+    - debug:
+        var: entradas_db
+
+    - name: Insert data into tipo_entradas table
+      mysql_query:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: eperez
+        login_password: 1234
+        db: concierto
+        query: |
+          INSERT INTO tipo_entradas (id, tipo, precio) VALUES
+          (UUID(), 'Menor', 10),
+          (UUID(), 'Adulto', 5),
+          (UUID(), 'Jubilado', 7);
+
+    - name: Check if data was inserted into tipo_entradas table
+      mysql_query:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: eperez
+        login_password: 1234
+        db: concierto
+        query: "SELECT * FROM tipo_entradas;"
+      register: tipo_entradas_data
+
+    - debug:
+        var: tipo_entradas_data    
