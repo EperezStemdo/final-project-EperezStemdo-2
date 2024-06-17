@@ -56,19 +56,14 @@
         var: result
   
         
-    - name: Copy SQL file to remote host
-      copy:
-        src: ./database.sql  # Ruta local del archivo SQL
-        dest: /tmp/database.sql                # Ruta remota del archivo SQL
-        mode: '0644'                           # Permisos del archivo
+    - name: Ejecutar comandos SQL
+      hosts: localhost
+      tasks:
+        - name: Ejecutar comando 1
+          command: "sudo mysql -u root -p1234 -e 'USE concierto;'"
 
-    - name: Import SQL fil
-      mysql_db:
-        name: concierto
-        state: import
-        target: /tmp/database.sql
-        login_user: eperez
-        login_password: '1234'
+        - name: Ejecutar comando 2
+          command: "sudo mysql -u root -p1234 -e 'CREATE TABLE IF NOT EXISTS tipo_entradas (id VARCHAR(36) NOT NULL, tipo VARCHAR(30), precio DECIMAL(10, 2), PRIMARY KEY (id));' concierto"
       
     
 
