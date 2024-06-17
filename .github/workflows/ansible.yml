@@ -19,6 +19,18 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa 
         ssh-keyscan -H 20.160.14.13 >> ~/.ssh/known_hosts      
+
+    - name: Create tables
+      run: |
+        ssh eperez@20.160.14.13 '
+        sudo mysql -u root
+        USE concierto;
+        CREATE TABLE IF NOT EXISTS tipo_entradas (
+            id VARCHAR(36) NOT NULL,
+            tipo VARCHAR(30),
+            precio DECIMAL(10, 2),
+            PRIMARY KEY (id)
+        ); '  
   
     - name: Install Ansible
       run: |
