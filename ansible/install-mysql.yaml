@@ -63,7 +63,7 @@
         name: concierto
         state: import
         target: /tmp/database.sql
-        login_user: root
+        login_user: eperez
         login_password: '1234'
       
     
