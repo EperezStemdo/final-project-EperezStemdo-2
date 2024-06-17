@@ -7,7 +7,7 @@ on:
       #- '*'
 jobs:
   ansible:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
@@ -17,12 +17,12 @@ jobs:
       with:
         creds: ${{ secrets.AZ_CREDENTIALS }}
         
-     
-    - name: Connect to mv with bastion and Install Ansible
+    - name: SSH key & host
       run: |
-        sudo az extension add --name ssh
-        sudo az network bastion ssh --name "eperezbastion" --resource-group "rg-eperez-dvfinlab" --target-resource-id "/subscriptions/86f76907-b9d5-46fa-a39d-aff8432a1868/resourceGroups/rg-eperez-dvfinlab/providers/Microsoft.Compute/virtualMachines/eperezvmdb" --auth-type "password" --username "eperez"
-        sudo apt-get update      
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa 
+        ssh-keyscan -H 4.180.190.192 >> ~/.ssh/known_hosts      
   
     - name: Install Ansible
       run: |
