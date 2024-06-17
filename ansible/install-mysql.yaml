@@ -38,7 +38,7 @@
 
     - name: Create MySQL user
       mysql_user:
-        name: root
+        name: eperez
         password: 1234
         priv: '*.*:ALL'
         host: localhost
@@ -67,7 +67,7 @@
         name: concierto
         state: import
         target: /tmp/database.sql
-        login_user: root
+        login_user: eperez
         login_password: '1234'
       
     
