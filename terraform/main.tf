@@ -131,6 +131,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
     username   = each.value.admin_username
     public_key = file("./id_rsa.pub")
   }
+
+  custom_data = base64encode(local.custom_data)
 }
 
 #Ansible
@@ -176,5 +178,22 @@ resource "azurerm_container_registry" "acr" {
   resource_group_name = var.resource_group_name
   location            = var.location
   sku                 = "Standard"
+}
+
+
+locals {
+  custom_data = <<EOF
+#cloud-config
+runcmd:
+- [mkdir, '/actions-runner']
+- [cd, '/actions-runner']
+- [curl, '-o', 'actions-runner-linux-x64-2.317.0.tar.gz', '-L', 'https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz']
+- [tar, '-xzf', 'actions-runner-linux-x64-2.317.0.tar.gz']
+- [chmod, '-R', '777', '/actions-runner']
+- [su, 'eperez', '-c', '/actions-runner/config.sh --url https://github.com/stemdo-labs/final-project-EperezStemdo-2 --token BHVSGAL5OM56YX7NZYYHXYTGOABKS' ]
+- ['./svc.sh', 'install']
+- ['./svc.sh', 'start']
+- [rm, '/actions-runner/actions-runner.tar.gz']
+EOF
 }
 
