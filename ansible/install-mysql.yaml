@@ -62,7 +62,7 @@
         mode: '0644'                           # Permisos del archivo
 
     - name: Import SQL file
-      mysql_db: name=concierto state=import target=/tmp/database.sql login_user=eperez login_password='1234' 
+      mysql_db: name=concierto state=import target=/tmp/database.sql login_user=root login_password='1234' 
      
         
     - name: Crear tabla tipo_entradas
