@@ -32,7 +32,7 @@
 
     - name: Create database
       mysql_db:
-        name: "{{ db_name }}"
+        name: 'concierto'
         state: present
         login_user: root
         login_password: "1234"
