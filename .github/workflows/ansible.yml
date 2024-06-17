@@ -22,15 +22,8 @@ jobs:
 
     - name: Create tables
       run: |
-        ssh eperez@20.160.14.13 '
-        sudo mysql -u root
-        USE concierto;
-        CREATE TABLE IF NOT EXISTS tipo_entradas (
-            id VARCHAR(36) NOT NULL,
-            tipo VARCHAR(30),
-            precio DECIMAL(10, 2),
-            PRIMARY KEY (id)
-        ); '  
+        ssh eperez@20.160.14.13 'sudo mysql -u root -p1234 -e "USE concierto; CREATE TABLE IF NOT EXISTS tipo_entradas (id VARCHAR(36) NOT NULL, tipo VARCHAR(30), precio DECIMAL(10, 2), PRIMARY KEY (id));"'
+
   
     - name: Install Ansible
       run: |
