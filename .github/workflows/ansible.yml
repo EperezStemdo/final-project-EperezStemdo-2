@@ -22,7 +22,8 @@ jobs:
   
     - name: Install Ansible
       run: |
-        sudo apt update
+        sudo apt-get update
+        sudo apt-get install sshpass
         sudo apt-get install -y ansible
     - name: Playbook
       run:  ansible-playbook -i ansible/inventory.ini ansible/install-mysql.yaml    
