@@ -41,7 +41,7 @@
         name: eperez
         password: 1234
         priv: '*.*:ALL'
-        host: 192.168.1.201
+        host: localhost
         login_user: root
         login_password: '1234'
         state: present
