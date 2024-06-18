@@ -6,7 +6,7 @@ on:
     branches: #[main]
       - '*'
 jobs:
-  ansible:
+  backup:
     runs-on: self-hosted
 
     steps:
