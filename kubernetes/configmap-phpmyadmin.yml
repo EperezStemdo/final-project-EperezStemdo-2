@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  DB_DATABASE: concierto
+  DB_DATABASE_HOST: 10.0.2.4 #20.234.131.11
+  DB_DATABASE_PORT_NUMBER: "3306"
+  DB_DATABASE_USER: adminuser
+kind: ConfigMap
+metadata:
+  name: datos-phpmyadmin
