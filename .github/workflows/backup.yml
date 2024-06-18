@@ -1,0 +1,41 @@
+name: backup mysql
+
+on:
+  #workflow_dispatch:
+  push:
+    branches: #[main]
+      - '*'
+jobs:
+  ansible:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZ_CREDENTIALS }} 
+
+    - name: Login to ACR
+      uses: azure/docker-login@v1
+      with:
+        login-server: eperezacr.azurecr.io
+        username: eperezacr
+        password: ${{ secrets.ACR_PASSWORD }}    
+    
+    - name: SSH key & host
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        echo "${{ secrets.PUBLIC_SSH_KEY }}" > ~/.ssh/id_rsa.pub
+        chmod 600 ~/.ssh/id_rsa 
+        ssh-keyscan -H 10.0.1.4 >> ~/.ssh/known_hosts      
+  
+    - name: Create back up and upload to container in azure
+      run: |
+        mysqldump -h 10.0.1.4 -u adminuser -p1234 concierto > ~/backup/concierto.sql
+        tar -czvf backup.tar.gz backup.sql
+        az storage blob upload --account-name staeperezdvfinlab --container-name eperezbackup --name backup.tar.gz --file backup.tar.gz
+
+
