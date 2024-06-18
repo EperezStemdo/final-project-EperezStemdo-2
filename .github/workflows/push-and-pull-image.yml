@@ -2,8 +2,8 @@ name: Push image to Azure Container Registry
 
 on:
   push:
-    branches: [main]
-      #- '*'
+    branches: #[main]
+      - '*'
 
 permissions:
   id-token: write
@@ -13,6 +13,8 @@ permissions:
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
+
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -29,12 +31,22 @@ jobs:
           login-server: eperezacr.azurecr.io
           username: eperezacr
           password: ${{ secrets.ACR_PASSWORD }}
+ 
+
+      - name: Get version from composer.json
+        id: get_version
+        run: |
+          version=$(jq -r '.version' app/composer.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV  
+             
 
       - name: Docker image build, tag & push
         run: |
           docker build -t my-php-app ./app
-          docker tag my-php-app eperezacr.azurecr.io/eperez:1
-          docker push eperezacr.azurecr.io/eperez:1
+          docker tag my-php-app eperezacr.azurecr.io/eperez:${{ env.VERSION }}
+          docker push eperezacr.azurecr.io/eperez:${{ env.VERSION }}
+
+      
           
   deploy:
     runs-on: ubuntu-latest
