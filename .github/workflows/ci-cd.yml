@@ -55,6 +55,7 @@ jobs:
         run: |
           kubectl apply -f kubernetes/namespace.yaml
           kubectl create secret docker-registry secret-acr --docker-server=eperezacr.azurecr.io --docker-username=eperezacr --docker-password=${{ secrets.ACR_PASSWORD }} -n php-app
+          kubectl apply -f kubernetes/configmap.yaml
           kubectl apply -f kubernetes/deployment.yaml
           kubectl apply -f kubernetes/service.yaml
           kubectl get pods -n php-app
