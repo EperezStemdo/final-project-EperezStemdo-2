@@ -60,6 +60,6 @@ jobs:
           kubectl apply -f kubernetes/service.yaml
           kubectl apply -f kubernetes/configmap-phpmyadmin.yml
           kubectl apply -f kubernetes/phpmyadmin-deploy.yml
-          kubectl apply -f kubernetes/phpmyadmin-deploy.yml
+          kubectl apply -f kubernetes/phpmyadmin-svc.yml
           kubectl get pods -n php-app
         
