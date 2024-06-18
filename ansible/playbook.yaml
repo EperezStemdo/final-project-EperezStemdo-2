@@ -87,8 +87,16 @@
             precio DECIMAL(10,2) NOT NULL,
             FOREIGN KEY (tipo_entrada) REFERENCES tipo_entradas(id)
           );    
-               
-
+    - name: Rellenar tipo entradas
+      ansible.builtin.mysql_query:
+        login_user: adminuser
+        login_password: "1234"
+        query: |
+          INSERT INTO tipo_entradas (id, tipo, precio) VALUES
+          (UUID(), 'Menor', 10),
+          (UUID(), 'Adulto', 5),
+          (UUID(), 'Jubilado', 7);
+          
   handlers:
     - name: restart mysql
       service:
