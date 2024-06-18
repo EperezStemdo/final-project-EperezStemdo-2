@@ -1,5 +1,5 @@
 - name: Configure MySQL server for remote access
-  hosts: mysql_server
+  hosts: vmdb
   become: true
   tasks:
     - name: Actualizar paquetes
