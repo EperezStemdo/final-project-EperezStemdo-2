@@ -18,6 +18,27 @@ spec:
         image: eperezacr.azurecr.io/eperez:1
         ports:
         - containerPort: 80
+        env:
+          - name: DB_DATABASE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: datos-concierto
+                key: DB_DATABASE_HOST
+          - name: DB_DATABASE_USER
+            valueFrom:
+              configMapKeyRef:
+                name: datos-concierto
+                key: DB_DATABASE_USER
+          - name: DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: datos-concierto
+                key: DB_DATABASE
+          - name: DB_DATABASE_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: datos-concierto
+                key: DB_DATABASE_PASSWORD
       imagePullSecrets:
         - name: secret-acr  
         # resources:

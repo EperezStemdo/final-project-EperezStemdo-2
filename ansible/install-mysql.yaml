@@ -2,6 +2,11 @@
   hosts: vmdb
   become: yes
   tasks:
+  
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+        
     - name: installation
       apt:
         name:
@@ -27,22 +32,66 @@
 
     - name: Create database
       mysql_db:
-        name: concierto
+        name: 'concierto'
         state: present
-        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_user: root
+        login_password: "1234"
+       
 
-    - name: Create MySQL user
-      mysql_user:
-        name: eperez
-        password: 1234
-        priv: '*.*:ALL'
-        host: 192.168.1.201
-        login_unix_socket: /var/run/mysqld/mysqld.sock
-        state: present
-     
-
+  
+        
+    
+    - name: Enable remote login to mysql
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regex: '^bind-address\s*=\s*127.0.0.1'
+        line: 'bind-address = 0.0.0.0'
+        backup: yes
+      
+    
     - name: Check if database was created
       command: "sudo mysql -u root -p1234 -e 'show databases;'"
       register: result
     - debug:
         var: result
+
+    - name: Copy SQL file to remote host
+      copy:
+        src: ./database.sql  # Ruta local del archivo SQL
+        dest: /tmp/database.sql                # Ruta remota del archivo SQL
+        mode: '0644'                           # Permisos del archivo
+
+    - name: Import SQL file
+      mysql_db: name=concierto state=import target=/tmp/database.sql login_user=root login_password='1234' 
+     
+        
+    - name: Crear tabla tipo_entradas
+      ansible.builtin.mysql_query:
+        login_user: root
+        login_password: "1234"
+        query: |
+          CREATE TABLE IF NOT EXISTS concierto.tipo_entradas (
+            id VARCHAR(36) PRIMARY KEY,
+            tipo VARCHAR(30) NOT NULL,
+            precio DECIMAL(10,2) NOT NULL
+          );
+
+    - name: Crear tabla entradas
+      ansible.builtin.mysql_query:
+        login_user: root
+        login_password: "1234"
+        query: |
+          CREATE TABLE IF NOT EXISTS concierto.entradas (
+            id VARCHAR(36) PRIMARY KEY,
+            fecha DATE NOT NULL,
+            nombre VARCHAR(15) NOT NULL,
+            apellidos VARCHAR(30) NOT NULL,
+            telefono VARCHAR(9) NOT NULL,
+            tipo_entrada VARCHAR(36),
+            cantidad INT NOT NULL,
+            precio DECIMAL(10,2) NOT NULL,
+            FOREIGN KEY (tipo_entrada) REFERENCES tipo_entradas(id)
+          );    
+    
+        
+ 

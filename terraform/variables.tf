@@ -85,6 +85,7 @@ variable "network_interfaces" {
     private_ip_address_allocation = string
     subnet_keys = string
     public_ip_keys = string
+    public_ip_enabled = bool
 
   }))
 }
@@ -102,6 +103,7 @@ variable "virtual_machines" {
     caching            = string
     storage_account_type = string 
     network_interface_keys = list(string)
+    custom_data_enabled = bool
   }))
 }
 
@@ -122,7 +124,7 @@ variable "resource_group_name_prefix" {
 variable "node_count" {
   type        = number
   description = "The initial quantity of nodes for the node pool."
-  default     = 2
+  default     = 1
 }
 
 variable "msi_id" {
@@ -138,6 +140,9 @@ variable "username" {
 }
 
 
+  
+
+ 
   
 
  

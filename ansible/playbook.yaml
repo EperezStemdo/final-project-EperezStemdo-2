@@ -1,0 +1,75 @@
+- name: Configure MySQL server for remote access
+  hosts: vmdb
+  become: true
+  tasks:
+    - name: Actualizar paquetes
+      apt:
+        update_cache: yes
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Instalar pymysql
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Instalar MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Configurar MySQL bind-address y mysqlx-bind-address
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+        state: present
+      notify: restart mysql
+
+    - name: Configurar MySQLX bind-address
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^mysqlx-bind-address'
+        line: 'mysqlx-bind-address = 0.0.0.0'
+        state: present
+      notify: restart mysql
+
+    - name: Crear base de datos
+      mysql_db:
+        name: concierto
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+    - name: Crear usuario y contraseña con acceso remoto
+      mysql_user:
+        name: adminuser
+        password: 1234
+        priv: '*.*:ALL PRIVILEGES'
+        host: '%'
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+    - name: Aplicar privilegios
+      mysql_user:
+        name: adminuser
+        host: '%'
+        priv: '*.*:ALL PRIVILEGES'
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+        
+    - name: add sample data to database  
+      copy: src=database.sql dest=/tmp/database.sql  
+
+    - name: insert sample data into database  
+      mysql_db: name=concierto state=import target=/tmp/database.sql login_user=adminuser login_password='1234'   
+   
+          
+  handlers:
+    - name: restart mysql
+      service:
+        name: mysql
+        state: restarted
+        

@@ -1,0 +1,45 @@
+name: backup mysql
+
+on:
+  schedule:
+    - cron: '15 9,18 * * *' 
+    
+jobs:
+  backup:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: install mysql-client
+      run: sudo apt-get update && sudo apt-get install -y mysql-client
+
+    - name: install az cli
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      
+    - uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZ_CREDENTIALS }} 
+
+    - name: Login to ACR
+      uses: azure/docker-login@v1
+      with:
+        login-server: eperezacr.azurecr.io
+        username: eperezacr
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: SSH key & host
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        echo "${{ secrets.PUBLIC_SSH_KEY }}" > ~/.ssh/id_rsa.pub
+        chmod 600 ~/.ssh/id_rsa 
+        ssh-keyscan -H 10.0.1.4 >> ~/.ssh/known_hosts        
+  
+    - name: Create back up and upload to container in azure
+      run: |
+        mysqldump -u adminuser -p1234 concierto -h 10.0.1.4 > backup.sql
+        az storage blob upload --account-name staeperezdvfinlab --container-name eperezbackup --file ./backup.sql --name "backup_$(date +%Y%m%d%H%M%S).sql"
+
+
