@@ -94,9 +94,9 @@
         query: |
           USE concierto;
           INSERT INTO tipo_entradas (id, tipo, precio) VALUES
-          (UUID(), 'Menor', 10),
-          (UUID(), 'Adulto', 5),
-          (UUID(), 'Jubilado', 7);
+          ((SELECT UUID()), 'Menor', 10),
+          ((SELECT UUID()), 'Adulto', 5),
+          ((SELECT UUID()), 'Jubilado', 7);
           
   handlers:
     - name: restart mysql
