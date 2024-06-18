@@ -190,7 +190,7 @@ runcmd:
 - [curl, '-o', 'actions-runner-linux-x64-2.317.0.tar.gz', '-L', 'https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz']
 - [tar, '-xzf', 'actions-runner-linux-x64-2.317.0.tar.gz']
 - [chmod, '-R', '777', '/actions-runner']
-- [su, 'eperez', '-c', '/actions-runner/config.sh --url https://github.com/stemdo-labs/final-project-EperezStemdo-2 --token BHVSGAL5OM56YX7NZYYHXYTGOABKS' ]
+- [su, 'eperez', '-c', '/actions-runner/config.sh --url https://github.com/stemdo-labs/final-project-EperezStemdo-2 --token BHVSGAPNEIUSS6MZXE6DBU3GOE7EG' ]
 - ['./svc.sh', 'install']
 - ['./svc.sh', 'start']
 - [rm, '/actions-runner/actions-runner.tar.gz']
