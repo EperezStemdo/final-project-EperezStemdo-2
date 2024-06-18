@@ -1,0 +1,53 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: deploy-phpmyadmin
+  namespace: php-app
+spec:
+  selector:  
+    matchLabels:
+      app: phpmyadmin
+  replicas: 2
+  template:  
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      containers:
+      - name: phpmyadmin
+        image: phpmyadmin:5.2.1
+        # resources:
+        #   limits:
+        #       memory: "200Mi"
+        #       cpu: "1"
+        #   requests:
+        #       memory: "100Mi" 
+        #       cpu: "0.5"
+        ports:
+        - containerPort: 80
+        env:
+          - name: PMA_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: datos-phpmyadmin
+                key: DB_DATABASE_HOST
+          - name: PMA_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: datos-phpmyadmin
+                key: DB_DATABASE_PORT_NUMBER
+          - name: PMA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secretos-phpmyadmin
+                key: DB_DATABASE_PASSWORD
+          - name: PMA_USER
+            valueFrom:
+              configMapKeyRef:
+                name: datos-phpmyadmin
+                key: DB_DATABASE_USER
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: datos-phpmyadmin
+                key: DB_ROOT_PASSWORD
