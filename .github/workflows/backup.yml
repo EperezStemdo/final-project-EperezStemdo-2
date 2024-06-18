@@ -38,6 +38,6 @@ jobs:
     - name: Create back up and upload to container in azure
       run: |
         mysqldump -u adminuser -p1234 concierto -h 10.0.2.4 > database_backup.sql
-        az storage blob upload --account-name staeperezdvfinlab --container-name eperezbackup --file ./database_backup.sql --name backup.sql"
+        az storage blob upload --account-name staeperezdvfinlab --container-name eperezbackup --file ./database_backup.sql --name "backup.sql"
 
 
