@@ -59,44 +59,13 @@
         priv: '*.*:ALL PRIVILEGES'
         state: present
         login_unix_socket: /run/mysqld/mysqld.sock
-    
-    - name: Crear tabla tipo_entradas
-      ansible.builtin.mysql_query:
-        login_user: adminuser
-        login_password: "1234"
-        query: |
-          CREATE TABLE IF NOT EXISTS concierto.tipo_entradas (
-            id VARCHAR(36) PRIMARY KEY,
-            tipo VARCHAR(30) NOT NULL,
-            precio DECIMAL(10,2) NOT NULL
-          );
+        
+    - name: add sample data to database  
+      copy: src=database.sql dest=/tmp/database.sql  
 
-    - name: Crear tabla entradas
-      ansible.builtin.mysql_query:
-        login_user: adminuser
-        login_password: "1234"
-        query: |
-          CREATE TABLE IF NOT EXISTS concierto.entradas (
-            id VARCHAR(36) PRIMARY KEY,
-            fecha DATE NOT NULL,
-            nombre VARCHAR(15) NOT NULL,
-            apellidos VARCHAR(30) NOT NULL,
-            telefono VARCHAR(9) NOT NULL,
-            tipo_entrada VARCHAR(36),
-            cantidad INT NOT NULL,
-            precio DECIMAL(10,2) NOT NULL,
-            FOREIGN KEY (tipo_entrada) REFERENCES tipo_entradas(id)
-          );    
-    - name: Rellenar tipo entradas
-      ansible.builtin.mysql_query:
-        login_user: adminuser
-        login_password: "1234"
-        query: |
-          USE concierto;
-          INSERT INTO tipo_entradas (id, tipo, precio) VALUES
-          ((SELECT UUID()), 'Menor', 10),
-          ((SELECT UUID()), 'Adulto', 5),
-          ((SELECT UUID()), 'Jubilado', 7);
+    - name: insert sample data into database  
+      mysql_db: name=concierto state=import target=/tmp/database.sql login_user=root login_password=''   
+   
           
   handlers:
     - name: restart mysql
