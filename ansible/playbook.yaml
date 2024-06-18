@@ -64,7 +64,7 @@
       copy: src=database.sql dest=/tmp/database.sql  
 
     - name: insert sample data into database  
-      mysql_db: name=concierto state=import target=/tmp/database.sql login_user=root login_password=''   
+      mysql_db: name=concierto state=import target=/tmp/database.sql login_user=adminuser login_password='1234'   
    
           
   handlers:
