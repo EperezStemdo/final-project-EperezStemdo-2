@@ -18,34 +18,6 @@ sec_groups = {
     source_address_prefix = "*"
     destination_address_prefix = "*"
   }
-  nsg2 = {
-    name = "epereznsgbackup"
-    location = "West Europe"
-    resource_group_name  = "rg-eperez-dvfinlab"
-    rule_name = "AllowHTTP"
-    priority = 101
-    direction = "Inbound" 
-    access = "Allow"
-    protocol = "Tcp"
-    source_port_range = "*"
-    destination_port_range = "80"
-    source_address_prefix = "*"
-    destination_address_prefix = "*"
-  }
-  nsg3 = {
-    name  = "epereznsgdbk8s"
-    location = "West Europe"
-    resource_group_name  = "rg-eperez-dvfinlab"
-    rule_name = "AllowSSH"
-    priority = 100
-    direction = "Inbound" 
-    access = "Allow"
-    protocol = "Tcp"
-    source_port_range = "*"
-    destination_port_range = "22"
-    source_address_prefix = "*"
-    destination_address_prefix = "*"
-  }
 }
 
 #vnet
@@ -73,13 +45,15 @@ subnets = {
 
   }
   sn3 = {
-    name                       = "eperezsubnetk8s"
+    name                       = "eperezsncluster"
     resource_group_name                   = "rg-eperez-dvfinlab"
     virtual_network_name        = "vnetepereztfexercise"
     address_prefixes = ["10.0.3.0/24"]
     subnet_keys = "sn3"
     nsg_keys = "nsg3"
+
   }
+ 
 }
 
 #public ip
@@ -87,12 +61,6 @@ subnets = {
 public_ips = {
   pi1 = {
     name                       = "eperezpublicip1"
-    location                   = "West Europe"
-    resource_group_name        = "rg-eperez-dvfinlab"
-    allocation_method = "Static"
-  }
-  pi2 = {
-    name                       = "eperezpublicip2"
     location                   = "West Europe"
     resource_group_name        = "rg-eperez-dvfinlab"
     allocation_method = "Static"
@@ -108,6 +76,7 @@ network_interfaces = {
     private_ip_address_allocation = "Dynamic"
     subnet_keys = "sn1"
     public_ip_keys = "pi1"
+    public_ip_enabled=false
   }
   nic2 = {
     name                       = "epereznicbackup"
@@ -116,6 +85,8 @@ network_interfaces = {
     private_ip_address_allocation = "Dynamic"
     subnet_keys = "sn2"
     public_ip_keys = "pi2"
+    public_ip_enabled=true
+
   }
 }
 
@@ -131,7 +102,8 @@ network_interfaces = {
       admin_password = "Eperez1234!"
       caching            = "ReadWrite"
       storage_account_type = "Standard_LRS"
-     network_interface_keys = ["nic1"]
+      network_interface_keys = ["nic1"]
+      custom_data_enabled=false
   }
   
     vm2 = {
@@ -143,6 +115,7 @@ network_interfaces = {
       admin_password = "Eperez1234!"
       caching            = "ReadWrite"
       storage_account_type = "Standard_LRS"
-    network_interface_keys = ["nic2"]
+      network_interface_keys = ["nic2"]
+      custom_data_enabled=true
     }
 }
