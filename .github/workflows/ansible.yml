@@ -3,8 +3,8 @@ name: Ansible playbook
 #on:  workflow_dispatch
 on:
   push:
-     branches:  [main]
-       #- '*'
+     branches:  #[main]
+       - '*'
 
 jobs:
   ansible:
