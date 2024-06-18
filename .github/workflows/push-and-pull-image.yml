@@ -31,20 +31,12 @@ jobs:
           login-server: eperezacr.azurecr.io
           username: eperezacr
           password: ${{ secrets.ACR_PASSWORD }}
- 
-
-      - name: Get version from composer.json
-        id: get_version
-        run: |
-          VERSION=$(jq -r '.version' ./app/composer.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV  
-             
 
       - name: Docker image build, tag & push
         run: |
           docker build -t my-php-app ./app
-          docker tag my-php-app eperezacr.azurecr.io/eperez:${{ env.VERSION }}
-          docker push eperezacr.azurecr.io/eperez:${{ env.VERSION }}
+          docker tag my-php-app eperezacr.azurecr.io/eperez:1
+          docker push eperezacr.azurecr.io/eperez:1
 
       
           
