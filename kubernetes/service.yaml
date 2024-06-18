@@ -6,6 +6,6 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: phpmyadmin
+    app: php-app
   ports:
     - port: 80
