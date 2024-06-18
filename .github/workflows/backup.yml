@@ -16,6 +16,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: install mysql-client
+      run: sudo apt-get update && sudo apt-get install -y mysql-client
+
     - name: install az cli
       run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       
@@ -30,13 +33,7 @@ jobs:
         username: eperezacr
         password: ${{ secrets.ACR_PASSWORD }}
 
-    - name: SSH key & host
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        echo "${{ secrets.PUBLIC_SSH_KEY }}" > ~/.ssh/id_rsa.pub
-        chmod 600 ~/.ssh/id_rsa 
-        ssh-keyscan -H 10.0.2.4 >> ~/.ssh/known_hosts        
+         
   
     - name: Create back up and upload to container in azure
       run: |
