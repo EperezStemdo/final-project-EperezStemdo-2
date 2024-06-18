@@ -1,10 +1,7 @@
-name: self host runner
+name: Ansible playbook
 
-on:
-  #workflow_dispatch:
-  push:
-    branches: [main]
-      #- '*'
+on:  workflow_dispatch
+
 jobs:
   ansible:
     runs-on: self-hosted
