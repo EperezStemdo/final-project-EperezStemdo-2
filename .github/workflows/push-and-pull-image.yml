@@ -13,6 +13,8 @@ permissions:
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
+
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -35,6 +37,8 @@ jobs:
           docker build -t my-php-app ./app
           docker tag my-php-app eperezacr.azurecr.io/eperez:1
           docker push eperezacr.azurecr.io/eperez:1
+
+      
           
   deploy:
     runs-on: ubuntu-latest

@@ -35,11 +35,11 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         echo "${{ secrets.PUBLIC_SSH_KEY }}" > ~/.ssh/id_rsa.pub
         chmod 600 ~/.ssh/id_rsa 
-        ssh-keyscan -H 10.0.1.4 >> ~/.ssh/known_hosts        
+        ssh-keyscan -H ${{ secrets.PRIVATE_IP }} >> ~/.ssh/known_hosts        
   
     - name: Create back up and upload to container in azure
       run: |
-        mysqldump -u adminuser -p1234 concierto -h 10.0.1.4 > backup.sql
+        mysqldump -u adminuser -p${{ secrets.MYSQL_ADMINUSER_PASS }} concierto -h ${{ secrets.PRIVATE_IP }} > backup.sql
         az storage blob upload --account-name staeperezdvfinlab --container-name eperezbackup --file ./backup.sql --name "backup_$(date +%Y%m%d%H%M%S).sql"
 
 
