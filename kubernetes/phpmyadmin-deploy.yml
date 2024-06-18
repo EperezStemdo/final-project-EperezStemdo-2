@@ -31,8 +31,8 @@ spec:
                 key: DB_DATABASE_PORT_NUMBER
           - name: PMA_PASSWORD
             valueFrom:
-              secretKeyRef:
-                name: secretos-phpmyadmin
+              configMapKeyRef:
+                name: datos-phpmyadmin
                 key: DB_DATABASE_PASSWORD
           - name: PMA_USER
             valueFrom:
