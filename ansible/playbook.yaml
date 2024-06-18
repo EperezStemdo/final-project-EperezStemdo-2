@@ -92,6 +92,7 @@
         login_user: adminuser
         login_password: "1234"
         query: |
+          USE concierto;
           INSERT INTO tipo_entradas (id, tipo, precio) VALUES
           (UUID(), 'Menor', 10),
           (UUID(), 'Adulto', 5),
