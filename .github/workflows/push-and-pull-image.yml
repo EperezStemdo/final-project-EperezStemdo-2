@@ -1,4 +1,4 @@
-name: Push image to Azure Container Registry
+name: Push image to Azure Container Registryy
 
 on:
   push:
